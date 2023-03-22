@@ -10,5 +10,6 @@ namespace SolarCoffee.Data.Models
         public int QuantityOnHand { get; set; }
         public int IdealQuantity { get; set; }
         public Product Product { get; set; }
+        public DateTime SnapshotTime { get; set; }
     }
 }
