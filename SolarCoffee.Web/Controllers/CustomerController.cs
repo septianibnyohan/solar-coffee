@@ -22,6 +22,11 @@ namespace SolarCoffee.Web.Controllers
         [HttpPost("/api/customer")]
         public ActionResult CreateCustomer([FromBody] CustomerModel customer)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
             _logger.LogInformation("Creating a new customer");
             customer.CreatedOn = DateTime.UtcNow;
             customer.UpdatedOn = DateTime.UtcNow;
@@ -53,6 +58,7 @@ namespace SolarCoffee.Web.Controllers
             return Ok(customerModels);
         }
 
+        [HttpDelete("/api/customer/{id}")]
         public ActionResult DeleteCustomer(int id)
         {
             _logger.LogInformation("Deleting a customer");

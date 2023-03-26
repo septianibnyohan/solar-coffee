@@ -15,6 +15,7 @@ using SolarCoffee.Data;
 using SolarCoffee.Data.Models;
 using SolarCoffee.Services.Customer;
 using SolarCoffee.Services.Inventory;
+using SolarCoffee.Services.Order;
 using SolarCoffee.Services.Product;
 
 namespace SolarCoffee.Web
@@ -31,6 +32,7 @@ namespace SolarCoffee.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
 
             services.AddDbContext<SolarDbContext>(
@@ -42,6 +44,7 @@ namespace SolarCoffee.Web
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<IInventoryService, InventoryService>();
+            services.AddTransient<IOrderService, OrderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +58,16 @@ namespace SolarCoffee.Web
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(builder =>
+                builder
+                    .WithOrigins(
+                        "http://localhost:8080",
+                        "http://localhost:8081",
+                        "http://localhost:8082")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
 
             app.UseAuthorization();
 

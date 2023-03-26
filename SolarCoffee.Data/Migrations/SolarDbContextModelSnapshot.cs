@@ -338,6 +338,9 @@ namespace SolarCoffee.Data.Migrations
                     b.Property<int>("QuantityOnHand")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("SnapshotTime")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("timestamp without time zone");
 

@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SolarCoffee.Services.Inventory;
+using SolarCoffee.Web.Serialization;
 using SolarCoffee.Web.ViewModels;
 
 namespace SolarCoffee.Web.Controllers
@@ -25,10 +26,14 @@ namespace SolarCoffee.Web.Controllers
         public ActionResult GetCurrentInventory()
         {
             _logger.LogInformation("Getting all inventory...");
+            var test = _inventoryService.GetCurrentInventory();
             var inventory = _inventoryService.GetCurrentInventory()
                 .Select(pi => new ProductInventoryModel
                 {
-
+                    Id = pi.Id,
+                    Product = ProductMapper.SerializeProductModel(pi.Product),
+                    IdealQuantity = pi.IdealQuantity,
+                    QuantityOnHand = pi.QuantityOnHand
                 })
                 .OrderBy(inv => inv.Product.Name)
                 .ToList();
@@ -39,6 +44,11 @@ namespace SolarCoffee.Web.Controllers
         [HttpPatch("/api/inventory")]
         public ActionResult UpdateInventory([FromBody] ShipmentModel shipment)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
             _logger.LogInformation(
                 "Updating inventory " +
                     $"for {shipment.ProductId} - " +
