@@ -14,6 +14,7 @@ export class ProductService {
   }
 
   async save(newProduct: IProduct) {
+    newProduct.price = parseFloat(String(newProduct.price));
     const result = await axios.post(`${this.API_URL}/product/`, newProduct);
     return result.data;
   }

@@ -19,7 +19,8 @@ import moment from "moment";
 
 // noinspection TypeScriptCheckImport
 import VueApexCharts from "vue-apexcharts";
-Vue.component("apexchar t", VueApexCharts);
+// eslint-disable-next-line vue/multi-word-component-names
+Vue.component("apexchart", VueApexCharts);
 
 @Component({
   name: "InventoryChart",
